@@ -68,14 +68,56 @@ const con = mysql.createConnection({
 //     });
 // });
 
-//Create Cocktail_Ingredient Table
+// //Create Cocktail_Ingredient Table
+// con.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Connected baby!");
+//     var sql = "CREATE TABLE IF NOT EXISTS Cocktail_Ingredient (id_cocktail_ingredient INT NOT NULL AUTO_INCREMENT, id_relational_cocktail INT NOT NULL, id_relational_ingredient INT NOT NULL, INDEX id_relational_cocktail_idx (id_relational_cocktail ASC) VISIBLE, INDEX id_relational_ingredient_idx (id_relational_ingredient ASC) VISIBLE, PRIMARY KEY (id_cocktail_ingredient), UNIQUE INDEX id_cocktail_ingredient_UNIQUE (id_cocktail_ingredient ASC) VISIBLE, CONSTRAINT id_relational_cocktail FOREIGN KEY (id_relational_cocktail) REFERENCES Cocktail (id_cocktail) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT id_relational_ingredient FOREIGN KEY (id_relational_ingredient) REFERENCES Ingredients (id_ingredient) ON DELETE NO ACTION ON UPDATE NO ACTION)";
+//     con.query(sql, function (err, result) {
+//         if (err) throw err;
+//         console.log("Table Cocktail_Ingredient created!");
+//     });
+// });
+
+let testCocktail = {
+    "name": 'lemon something',
+    "category": "alcoholic",
+    "glass": "bucket",
+    "instructions": "dump it all in", 
+    "ingredients": [
+        "vodka", "gin", "lemons", "campari", "antica"
+    ],
+    "units": [
+        1, 1, 1, 1, 2
+    ],
+    "both": [
+        "1 vodka", "1 gin", "1 lemons", "1 campari", "2 antica"
+    ],
+    "source": "local",
+    "favorite": "false"
+}
+
+//Insert 1 New Cocktail
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected baby!");
-    var sql = "CREATE TABLE IF NOT EXISTS Cocktail_Ingredient (id_cocktail_ingredient INT NOT NULL AUTO_INCREMENT, id_relational_cocktail INT NOT NULL, id_relational_ingredient INT NOT NULL, INDEX id_relational_cocktail_idx (id_relational_cocktail ASC) VISIBLE, INDEX id_relational_ingredient_idx (id_relational_ingredient ASC) VISIBLE, PRIMARY KEY (id_cocktail_ingredient), UNIQUE INDEX id_cocktail_ingredient_UNIQUE (id_cocktail_ingredient ASC) VISIBLE, CONSTRAINT id_relational_cocktail FOREIGN KEY (id_relational_cocktail) REFERENCES Cocktail (id_cocktail) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT id_relational_ingredient FOREIGN KEY (id_relational_ingredient) REFERENCES Ingredients (id_ingredient) ON DELETE NO ACTION ON UPDATE NO ACTION)";
-    con.query(sql, function (err, result) {
+    var forCocktail = `INSERT INTO Cocktail (cocktail_name, instructions, source) VALUES ('${testCocktail.name}', '${testCocktail.instructions}', '${testCocktail.source}')`;
+    con.query(forCocktail, function (err, result) {
         if (err) throw err;
-        console.log("Table Cocktail_Ingredient created!");
+        // console.log(`Inserted ${testCocktail.name} into Cocktail`);
+        console.log("test worked!")
+    });
+
+    //leaving off here - finish this input
+    var forReceptacle = `INSERT INTO Receptacle (cocktail_name, instructions, source) VALUES ('${testCocktail.name}', '${testCocktail.instructions}', '${testCocktail.source}')`;
+    con.query(forReceptacle, function (err, result) {
+        if (err) throw err;
+        // console.log(`Inserted ${testCocktail.name} into Cocktail`);
+        console.log("test worked!")
     });
 });
+
+
+
+
 module.exports = app;
